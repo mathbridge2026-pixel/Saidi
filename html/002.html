@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>المعادلة الديكارتية للمستقيم</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 8px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        .header h1 {
+            background: linear-gradient(90deg, #ffd700, #ffb347, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        @media (min-width: 640px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        .score-display {
+            display: inline-block;
+            background: linear-gradient(145deg, #2d2d44, #1a1a2e);
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: 2px solid #ffd700;
+            font-size: 1rem;
+            color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .render-math {
+            direction: ltr;
+            unicode-bidi: isolate;
+        } 
+
+        .card {
+            background: linear-gradient(145deg, #2d2d44, #1f1f35);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @media (min-width: 640px) {
+            .card {
+                padding: 25px;
+                border-radius: 20px;
+            }
+        }
+
+        .card-title {
+            color: #ffd700;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+            padding-bottom: 10px;
+        }
+
+        @media (min-width: 640px) {
+            .card-title {
+                font-size: 1.3rem;
+                margin-bottom: 20px;
+            }
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .mode-btn {
+            padding: 10px 25px;
+            border: 2px solid #ffd700;
+            border-radius: 25px;
+            background: transparent;
+            color: #ffd700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        @media (min-width: 640px) {
+            .mode-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        .mode-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            transform: scale(1.05);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            color: #1a1a2e;
+            font-weight: bold;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .input-group {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .input-group-title {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .point-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            direction: ltr;
+            flex-wrap: wrap;
+        }
+
+        .point-input input {
+            width: 70px;
+            padding: 8px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .point-input input::-webkit-inner-spin-button,
+        .point-input input::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        .point-input input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .point-input .math-symbol {
+            color: #ffd700;
+            font-size: 1rem;
+        }
+
+        .vector-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            direction: ltr;
+        }
+
+        .vector-inputs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px 15px;
+            border-left: 3px solid #ffd700;
+            border-right: 3px solid #ffd700;
+            border-radius: 5px;
+        }
+
+        .vector-inputs-container input {
+            width: 70px;
+            padding: 8px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .vector-inputs-container input::-webkit-inner-spin-button,
+        .vector-inputs-container input::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        .vector-inputs-container input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .hint-text {
+            text-align: center;
+            color: rgba(255, 215, 0, 0.6);
+            font-size: 0.8rem;
+            margin-top: 10px;
+            direction: ltr;
+        }
+
+        .start-btn {
+            padding: 12px 40px;
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            border: none;
+            border-radius: 30px;
+            color: #1a1a2e;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .data-display {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+        }
+
+        @media (min-width: 640px) {
+            .data-display {
+                gap: 40px;
+                padding: 20px;
+            }
+        }
+
+        .data-item {
+            text-align: center;
+            direction: ltr;
+        }
+
+        .data-item-title {
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .data-item-value {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            color: #1a1a2e;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 640px) {
+            .step-number {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        .step-title {
+            color: #ffd700;
+            font-size: 1rem;
+        }
+
+        .question-text {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        @media (min-width: 640px) {
+            .question-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 12px 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            direction: ltr;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            transform: translateX(-5px);
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+            animation: pulse 0.5s ease;
+        }
+
+        .option-btn.wrong {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #ff0000;
+            animation: shake 0.5s ease;
+        }
+
+        .option-btn.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+            font-size: 0.95rem;
+        }
+
+        .feedback.correct {
+            background: rgba(0, 255, 0, 0.1);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .feedback.wrong {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .error-message {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff6b6b;
+            border-radius: 12px;
+            color: #ff6b6b;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .explanation {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .explanation-title {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            direction: rtl;
+        }
+
+        .explanation-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .explanation-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            direction: ltr;
+        }
+
+        @media (min-width: 640px) {
+            .explanation-row {
+                gap: 30px;
+            }
+        }
+
+        .vector-display {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            min-width: 100px;
+        }
+
+        .vector-display-title {
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .determinant-section {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.05);
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .determinant-section > div {
+            direction: ltr;
+            margin: 10px 0;
+        }
+
+        .determinant-section .math-row {
+            margin: 15px 0;
+            padding: 5px 0;
+        }
+
+        .step2-inputs, .step3-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            direction: ltr;
+            margin: 15px 0;
+        }
+
+        @media (min-width: 640px) {
+            .step2-inputs, .step3-inputs {
+                gap: 10px;
+            }
+        }
+
+        .step2-inputs input, .step3-inputs input {
+            width: 70px;
+            padding: 10px 5px;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .step2-inputs input::-webkit-inner-spin-button,
+        .step2-inputs input::-webkit-outer-spin-button,
+        .step3-inputs input::-webkit-inner-spin-button,
+        .step3-inputs input::-webkit-outer-spin-button {
+            opacity: 1;
+        }
+
+        @media (min-width: 640px) {
+            .step2-inputs input, .step3-inputs input {
+                width: 70px;
+                padding: 10px;
+            }
+        }
+
+        .step2-inputs input:focus, .step3-inputs input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .step2-inputs span, .step3-inputs span {
+            color: #ffd700;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            display: block;
+            margin: 15px auto;
+            padding: 10px 35px;
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            border: none;
+            border-radius: 25px;
+            color: #1a1a2e;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .new-question-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 40px;
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .new-question-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.5);
+        }
+
+        .new-question-btn:active {
+            transform: scale(0.98);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #ffd700;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .math-display {
+            direction: ltr;
+            display: inline-block;
+            unicode-bidi: isolate;
+        }
+
+        .vertical-note {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #ffd700;
+            color: #ffd700;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 المعادلة الديكارتية للمستقيم</h1>
+            <div class="score-display">النقاط: <span id="score">0</span></div>
+        </div>
+
+        <div id="app"></div>
+
+        <div class="footer">
+            ✨ تم تصميم هذا التطبيق من طرف الأستاذ سعيدي لخضر ✨
+        </div>
+    </div>
+
+    <script>
+        // State
+        let state = {
+            mode: 'auto',
+            gameStarted: false,
+            pointA: { x: 0, y: 0 },
+            vectorU: { x: 0, y: 0 },
+            manualInputs: { xA: '', yA: '', xU: '', yU: '' },
+            currentStep: 1,
+            step1Completed: false,
+            step2Completed: false,
+            step3Completed: false,
+            options: [],
+            correctAnswer: null,
+            selectedOption: null,
+            showFeedback: false,
+            isCorrect: false,
+            score: 0,
+            step2Inputs: { a: '', b: '', c: '' },
+            step3Inputs: { alpha: '', beta: '' },
+            correctValues: { a: 0, b: 0, c: 0 },
+            step2Error: '',
+            step3Error: ''
+        };
+
+        // Helper functions
+        function gcd(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
+            while (b) {
+                let t = b;
+                b = a % b;
+                a = t;
+            }
+            return a;
+        }
+
+        function parseFraction(input) {
+            if (!input || input.trim() === '') return null;
+            const trimmed = input.trim();
+            
+            if (trimmed.includes('/')) {
+                const parts = trimmed.split('/');
+                if (parts.length !== 2) return null;
+                const num = parseFloat(parts[0]);
+                const den = parseFloat(parts[1]);
+                if (isNaN(num) || isNaN(den) || den === 0) return null;
+                return num / den;
+            }
+            
+            const num = parseFloat(trimmed);
+            return isNaN(num) ? null : num;
+        }
+
+        function formatNumber(n) {
+            if (Number.isInteger(n)) return n.toString();
+            const fraction = toFraction(n);
+            if (fraction) {
+                if (fraction.den === 1) return fraction.num.toString();
+                const sign = (fraction.num < 0) !== (fraction.den < 0) ? '-' : '';
+                return `${sign}\\frac{${Math.abs(fraction.num)}}{${Math.abs(fraction.den)}}`;
+            }
+            return n.toFixed(2);
+        }
+
+        function toFraction(decimal) {
+            const tolerance = 1e-10;
+            for (let den = 1; den <= 100; den++) {
+                const num = Math.round(decimal * den);
+                if (Math.abs(decimal - num / den) < tolerance) {
+                    const g = gcd(Math.abs(num), Math.abs(den));
+                    return { num: num / g, den: den / g };
+                }
+            }
+            return null;
+        }
+
+        function formatEquation(latex) {
+            // Handle multiple operators more carefully
+            return latex
+                .replace(/\+\s*-/g, '- ')
+                .replace(/-\s*-/g, '+ ')
+                .replace(/\+\s*\+/g, '+ ')
+                .replace(/\s+/g, ' ')
+                .replace(/^\s*\+\s*/, '')
+                .replace(/=\s*\+\s*/g, '= ')
+                .replace(/=\s*-\s*-/g, '= ')
+                .trim();
+        }
+
+        function formatTerm(coefficient, variable = '') {
+            // Format a term with proper sign handling
+            const num = parseFloat(coefficient);
+            if (num === 0) return '';
+            
+            const absValue = Math.abs(num);
+            const formattedNum = formatNumber(absValue);
+            
+            if (num > 0) {
+                return `+ ${formattedNum}${variable}`;
+            } else {
+                return `- ${formattedNum}${variable}`;
+            }
+        }
+
+        function renderMath(element, latex) {
+            try {
+                katex.render(latex, element, {
+                    throwOnError: false,
+                    displayMode: false
+                });
+            } catch (e) {
+                element.textContent = latex;
+            }
+        }
+
+        function renderMathDisplay(element, latex) {
+            try {
+                katex.render(latex, element, {
+                    throwOnError: false,
+                    displayMode: true
+                });
+            } catch (e) {
+                element.textContent = latex;
+            }
+        }
+
+        function generateRandomInt(min, max) {
+            let val;
+            do {
+                val = Math.floor(Math.random() * (max - min + 1)) + min;
+            } while (val === 0);
+            return val;
+        }
+
+        function generateOptions() {
+            const { pointA } = state;
+            
+            const xA = formatNumber(pointA.x);
+            const yA = formatNumber(pointA.y);
+            
+            const correctFormatted = {
+                x: pointA.x >= 0 ? `x - ${xA}` : `x + ${formatNumber(-pointA.x)}`,
+                y: pointA.y >= 0 ? `y - ${yA}` : `y + ${formatNumber(-pointA.y)}`
+            };
+
+            const wrongOptions = [
+                { x: `x + ${xA}`, y: `y + ${yA}` },
+                { x: `${xA} - x`, y: `${yA} - y` },
+                { x: pointA.y >= 0 ? `y - ${yA}` : `y + ${formatNumber(-pointA.y)}`, 
+                  y: pointA.x >= 0 ? `x - ${xA}` : `x + ${formatNumber(-pointA.x)}` }
+            ];
+
+            const options = [correctFormatted, ...wrongOptions.slice(0, 2)];
+            
+            // Shuffle
+            for (let i = options.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [options[i], options[j]] = [options[j], options[i]];
+            }
+
+            state.options = options;
+            state.correctAnswer = options.findIndex(o => o.x === correctFormatted.x && o.y === correctFormatted.y);
+        }
+
+        function calculateCorrectValues() {
+            const { pointA, vectorU } = state;
+            const a = vectorU.y;
+            const b = -vectorU.x;
+            const c = -vectorU.y * pointA.x + vectorU.x * pointA.y;
+            state.correctValues = { a, b, c };
+        }
+
+        function startGame() {
+            if (state.mode === 'auto') {
+                state.pointA = {
+                    x: generateRandomInt(-5, 5),
+                    y: generateRandomInt(-5, 5)
+                };
+                state.vectorU = {
+                    x: generateRandomInt(-5, 5),
+                    y: generateRandomInt(-5, 5)
+                };
+            } else {
+                const xA = parseFraction(state.manualInputs.xA);
+                const yA = parseFraction(state.manualInputs.yA);
+                const xU = parseFraction(state.manualInputs.xU);
+                const yU = parseFraction(state.manualInputs.yU);
+
+                if (xA === null || yA === null || xU === null || yU === null) {
+                    alert('الرجاء إدخال جميع القيم بشكل صحيح');
+                    return;
+                }
+
+                if (xU === 0 && yU === 0) {
+                    alert('شعاع التوجيه لا يمكن أن يكون معدوماً');
+                    return;
+                }
+
+                state.pointA = { x: xA, y: yA };
+                state.vectorU = { x: xU, y: yU };
+            }
+
+            state.gameStarted = true;
+            state.currentStep = 1;
+            state.step1Completed = false;
+            state.step2Completed = false;
+            state.step3Completed = false;
+            state.selectedOption = null;
+            state.showFeedback = false;
+            state.step2Inputs = { a: '', b: '', c: '' };
+            state.step3Inputs = { alpha: '', beta: '' };
+            state.step2Error = '';
+            state.step3Error = '';
+
+            generateOptions();
+            calculateCorrectValues();
+            render();
+        }
+
+        function selectOption(index) {
+            if (state.showFeedback) return;
+
+            state.selectedOption = index;
+            state.showFeedback = true;
+            state.isCorrect = index === state.correctAnswer;
+
+            if (state.isCorrect) {
+                state.score += 2;
+                state.step1Completed = true;
+            } else {
+                state.score -= 1;
+            }
+
+            document.getElementById('score').textContent = state.score;
+            render();
+        }
+
+        function checkStep2() {
+            const { a, b, c } = state.step2Inputs;
+            const aVal = parseFraction(a);
+            const bVal = parseFraction(b);
+            const cVal = parseFraction(c);
+
+            if (aVal === null || bVal === null || cVal === null) {
+                state.step2Error = 'الرجاء إدخال جميع القيم';
+                render();
+                return;
+            }
+
+            const { a: correctA, b: correctB, c: correctC } = state.correctValues;
+
+            // Check if proportional
+            let isCorrect = false;
+            if (correctA !== 0) {
+                const k = aVal / correctA;
+                isCorrect = Math.abs(bVal - k * correctB) < 0.0001 && Math.abs(cVal - k * correctC) < 0.0001;
+            } else if (correctB !== 0) {
+                const k = bVal / correctB;
+                isCorrect = Math.abs(aVal) < 0.0001 && Math.abs(cVal - k * correctC) < 0.0001;
+            }
+
+            if (isCorrect) {
+                state.score += 2;
+                state.step2Completed = true;
+                state.currentStep = 3;
+                state.step2Error = '';
+            } else {
+                state.score -= 1;
+                state.step2Error = `إجابة خاطئة! القيم الصحيحة هي: a = ${formatNumber(correctA)}, b = ${formatNumber(correctB)}, c = ${formatNumber(correctC)}`;
+            }
+
+            document.getElementById('score').textContent = state.score;
+            render();
+        }
+
+        function checkStep3() {
+            const { alpha, beta } = state.step3Inputs;
+            const alphaVal = parseFraction(alpha);
+            const betaVal = parseFraction(beta);
+
+            if (alphaVal === null || betaVal === null) {
+                state.step3Error = 'الرجاء إدخال جميع القيم';
+                render();
+                return;
+            }
+
+            const { a, b, c } = state.correctValues;
+
+            if (b === 0) {
+                state.step3Error = 'المستقيم عمودي، لا توجد معادلة مختصرة من الشكل y = αx + β';
+                render();
+                return;
+            }
+
+            const correctAlpha = -a / b;
+            const correctBeta = -c / b;
+
+            if (Math.abs(alphaVal - correctAlpha) < 0.0001 && Math.abs(betaVal - correctBeta) < 0.0001) {
+                state.score += 2;
+                state.step3Completed = true;
+                state.step3Error = '';
+            } else {
+                state.score -= 1;
+                state.step3Error = `إجابة خاطئة! القيم الصحيحة هي: α = ${formatNumber(correctAlpha)}, β = ${formatNumber(correctBeta)}`;
+            }
+
+            document.getElementById('score').textContent = state.score;
+            render();
+        }
+
+        function newQuestion() {
+            state.gameStarted = false;
+            state.manualInputs = { xA: '', yA: '', xU: '', yU: '' };
+            render();
+        }
+
+        function render() {
+            const app = document.getElementById('app');
+            
+            if (!state.gameStarted) {
+                app.innerHTML = renderSetup();
+                setupEventListeners();
+            } else {
+                app.innerHTML = renderGame();
+                setupGameEventListeners();
+            }
+
+            // Render all math
+            document.querySelectorAll('.render-math').forEach(el => {
+                const latex = el.getAttribute('data-latex');
+                if (latex) renderMath(el, latex);
+            });
+
+            document.querySelectorAll('.render-math-display').forEach(el => {
+                const latex = el.getAttribute('data-latex');
+                if (latex) renderMathDisplay(el, latex);
+            });
+        }
+
+        function renderSetup() {
+            const isManualValid = state.mode === 'manual' ? 
+                (state.manualInputs.xA && state.manualInputs.yA && state.manualInputs.xU && state.manualInputs.yU) : true;
+
+            return `
+                <div class="card">
+                    <h2 class="card-title">⚙️ إعدادات اللعبة</h2>
+                    
+                    <div class="mode-buttons">
+                        <button class="mode-btn ${state.mode === 'auto' ? 'active' : ''}" data-mode="auto">
+                            🎲 تلقائي
+                        </button>
+                        <button class="mode-btn ${state.mode === 'manual' ? 'active' : ''}" data-mode="manual">
+                            ✏️ يدوي
+                        </button>
+                    </div>
+
+                    ${state.mode === 'manual' ? `
+                        <div class="input-section">
+                            <div class="input-group">
+                                <div class="input-group-title">النقطة A</div>
+                                <div class="point-input">
+                                    <span class="math-symbol">A(</span>
+                                    <input type="number" step="any" id="input-xA" placeholder="xₐ" value="${state.manualInputs.xA}">
+                                    <span class="math-symbol">;</span>
+                                    <input type="number" step="any" id="input-yA" placeholder="yₐ" value="${state.manualInputs.yA}">
+                                    <span class="math-symbol">)</span>
+                                </div>
+                                <div class="hint-text">A(xₐ ; yₐ)</div>
+                            </div>
+
+                            <div class="input-group">
+                                <div class="input-group-title">شعاع التوجيه <span class="render-math" data-latex="\\vec{u}"></span></div>
+                                <div class="vector-input">
+                                    <span class="render-math" data-latex="\\vec{u}"></span>
+                                    <div class="vector-inputs-container">
+                                        <input type="number" step="any" id="input-xU" placeholder="xᵤ" value="${state.manualInputs.xU}">
+                                        <input type="number" step="any" id="input-yU" placeholder="yᵤ" value="${state.manualInputs.yU}">
+                                    </div>
+                                </div>
+                                <div class="hint-text">
+                                    <span class="render-math" data-latex="\\vec{u}\\begin{pmatrix} x_u \\\\ y_u \\end{pmatrix}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    ` : `
+                        <p style="text-align: center; color: rgba(255,215,0,0.7); margin: 20px 0;">
+                            سيتم توليد قيم عشوائية للنقطة A وشعاع التوجيه u
+                        </p>
+                    `}
+
+                    <div style="text-align: center;">
+                        <button class="start-btn" id="start-btn" ${!isManualValid ? 'disabled' : ''}>
+                            🚀 ابدأ اللعبة
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGame() {
+            const { pointA, vectorU } = state;
+            const xA = formatNumber(pointA.x);
+            const yA = formatNumber(pointA.y);
+            const xU = formatNumber(vectorU.x);
+            const yU = formatNumber(vectorU.y);
+
+            return `
+                <div class="card">
+                    <div class="data-display">
+                        <div class="data-item">
+                            <h3 class="explanation-title">لتكن A نقطة من المستقيم (d) و الشعاع 
+                                <span class="render-math" data-latex="\\overrightarrow{u}"></span>
+                                شعاع توجيه للمستقيم حيث:
+                            </h3>
+                            <div class="data-item-title"> </div>
+                            <div class="data-item-value">
+                                <span class="render-math" data-latex="A(${xA} ; ${yA})"></span>
+                            </div>
+                        </div>
+                        <div class="data-item">
+                            <div class="data-item-title"> </div>
+                            <div class="data-item-value">
+                                <span class="render-math" data-latex="\\vec{u}\\begin{pmatrix} ${xU} \\\\ ${yU} \\end{pmatrix}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${renderStep1()}
+                    ${state.step1Completed ? renderStep2() : ''}
+                    ${state.step2Completed ? renderStep3() : ''}
+                    ${state.step3Completed ? `
+                        <button class="new-question-btn" id="new-question-btn">🔄 سؤال جديد</button>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function renderStep1() {
+            const { pointA, vectorU, options, selectedOption, showFeedback, isCorrect, correctAnswer } = state;
+            const xA = formatNumber(pointA.x);
+            const yA = formatNumber(pointA.y);
+            const xU = formatNumber(vectorU.x);
+            const yU = formatNumber(vectorU.y);
+
+            let optionsHtml = '';
+            options.forEach((opt, index) => {
+                let className = 'option-btn';
+                if (showFeedback) {
+                    className += ' disabled';
+                    if (index === correctAnswer) className += ' correct';
+                    else if (index === selectedOption && !isCorrect) className += ' wrong';
+                }
+                optionsHtml += `
+                    <button class="${className}" data-option="${index}">
+                        <span class="render-math" data-latex="\\overrightarrow{AM}\\begin{pmatrix} ${opt.x} \\\\ ${opt.y} \\end{pmatrix}"></span>
+                    </button>
+                `;
+            });
+
+            let feedbackHtml = '';
+            if (showFeedback) {
+                if (isCorrect) {
+                    feedbackHtml = `<div class="feedback correct">✅ إجابة صحيحة! +2 نقطة</div>`;
+                } else {
+                    const correct = options[correctAnswer];
+                    feedbackHtml = `
+                        <div class="feedback wrong">
+                            ❌ إجابة خاطئة! -1 نقطة<br>
+                            <span>الإجابة الصحيحة: </span>
+                            <span class="render-math" data-latex="\\overrightarrow{AM}\\begin{pmatrix} ${correct.x} \\\\ ${correct.y} \\end{pmatrix}"></span>
+                        </div>
+                    `;
+                }
+            }
+
+            let explanationHtml = '';
+            if (showFeedback) {
+                const xAm = pointA.x >= 0 ? `x - ${xA}` : `x + ${formatNumber(-pointA.x)}`;
+                const yAm = pointA.y >= 0 ? `y - ${yA}` : `y + ${formatNumber(-pointA.y)}`;
+
+                // Calculate the actual values for the detail
+                const xUNum = vectorU.x;
+                const yUNum = vectorU.y;
+
+                // Build the detail equation properly
+                let detailEq = `${formatNumber(yUNum)} \\cdot (${xAm}) - (${formatNumber(xUNum)}) \\cdot (${yAm}) = 0`;
+                detailEq = formatEquation(detailEq);
+
+                explanationHtml = `
+                    <div class="explanation">
+                        <h3 class="explanation-title">📝 مركبات الشعاعين</h3>
+                        <div class="explanation-content">
+                            <div class="explanation-row">
+                                <div class="vector-display">
+                                    <div class="vector-display-title">
+                                        <span class="render-math" data-latex="\\vec{u}"></span>
+                                    </div>
+                                    <span class="render-math" data-latex="\\begin{pmatrix} ${xU} \\\\ ${yU} \\end{pmatrix}"></span>
+                                </div>
+                                <div class="vector-display">
+                                    <div class="vector-display-title">
+                                        <span class="render-math" data-latex="\\overrightarrow{AM}"></span>
+                                    </div>
+                                    <span class="render-math" data-latex="\\begin{pmatrix} ${xAm} \\\\ ${yAm} \\end{pmatrix}"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="determinant-section">
+                                <h3 class="explanation-title">الشعاعان 
+                                    <span class="render-math" data-latex="\\overrightarrow{AM}"></span> و
+                                    <span class="render-math" data-latex="\\overrightarrow{u}"></span>
+                                    مرتبطان خطيا معناه
+                                </h3>
+                                
+                                <div><strong>: المحدد</strong></div>
+                                <div class="math-row">
+                                    <span class="render-math-display" data-latex="\\begin{vmatrix} ${xU} & ${xAm} \\\\ ${yU} & ${yAm} \\end{vmatrix} = 0"></span>
+                                </div>
+                                
+                                
+                                
+                                <div><strong>: المعادلة</strong></div>
+                                <div class="math-row">
+                                    <span class="render-math-display" data-latex="${detailEq}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div style="margin-bottom: 20px;">
+                    <div class="step-header">
+                        <div class="step-number">1</div>
+                        <div class="step-title">إيجاد مركبات الشعاع <span class="render-math" data-latex="\\overrightarrow{AM}"></span></div>
+                    </div>
+                    
+                    <div class="question-text">
+                        لتكن <span class="render-math" data-latex="M(x;y)"></span> نقطة من المستقيم <span class="render-math" data-latex="(d)"></span>،نعلم أن A نقطة من نفس المستقيم.<br>
+                        أوجد مركبات الشعاع <span class="render-math" data-latex="\\overrightarrow{AM}"></span>
+                    </div>
+
+                    <div class="options-container">
+                        ${optionsHtml}
+                    </div>
+
+                    ${feedbackHtml}
+                    ${explanationHtml}
+                </div>
+            `;
+        }
+
+        function renderStep2() {
+            const { step2Inputs, step2Completed, step2Error, correctValues } = state;
+            const { a, b, c } = correctValues;
+
+            if (step2Completed) {
+                // Build equation with proper sign handling
+                let eqLatex = `${formatNumber(Math.abs(a))}x`;
+                if (a < 0) eqLatex = `-${formatNumber(Math.abs(a))}x`;
+                
+                eqLatex += formatTerm(b, 'y');
+                eqLatex += formatTerm(c, '');
+                eqLatex += ' = 0';
+                
+                // Clean up leading plus
+                eqLatex = eqLatex.replace(/^\+ /, '');
+
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <div class="step-header">
+                            <div class="step-number">2</div>
+                            <div class="step-title">المعادلة الديكارتية</div>
+                        </div>
+                        <div class="feedback correct">
+                            ✅ إجابة صحيحة! +2 نقطة<br>
+                            <span class="render-math" data-latex="${eqLatex}"></span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div style="margin-bottom: 20px;">
+                    <div class="step-header">
+                        <div class="step-number">2</div>
+                        <div class="step-title">المعادلة الديكارتية</div>
+                    </div>
+                    
+                    <div class="question-text">
+                        اكتب المعادلة الديكارتية <span class="render-math" data-latex="ax + by + c = 0"></span>
+                    </div>
+
+                    <div class="step2-inputs">
+                        <input type="number" step="any" id="step2-a" placeholder="a" value="${step2Inputs.a}">
+                        <span>x +</span>
+                        <input type="number" step="any" id="step2-b" placeholder="b" value="${step2Inputs.b}">
+                        <span>y +</span>
+                        <input type="number" step="any" id="step2-c" placeholder="c" value="${step2Inputs.c}">
+                        <span>= 0</span>
+                    </div>
+
+                    ${step2Error ? `<div class="error-message">${step2Error}</div>` : ''}
+
+                    <button class="submit-btn" id="check-step2">تحقق</button>
+                </div>
+            `;
+        }
+
+        function renderStep3() {
+            const { step3Inputs, step3Completed, step3Error, correctValues } = state;
+            const { a, b, c } = correctValues;
+
+            if (b === 0) {
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <div class="step-title">المعادلة المختصرة</div>
+                        </div>
+                        <div class="vertical-note">
+                            ⚠️ المستقيم عمودي (b = 0)، لا توجد معادلة مختصرة من الشكل y = αx + β
+                        </div>
+                        <button class="new-question-btn" id="new-question-btn">🔄 سؤال جديد</button>
+                    </div>
+                `;
+            }
+
+            if (step3Completed) {
+                const alpha = -a / b;
+                const beta = -c / b;
+                
+                // Build equation with proper sign handling
+                let eqLatex = `y = ${formatNumber(Math.abs(alpha))}x`;
+                if (alpha < 0) eqLatex = `y = -${formatNumber(Math.abs(alpha))}x`;
+                
+                eqLatex += formatTerm(beta, '');
+                
+                // Clean up
+                eqLatex = eqLatex.replace(/\+ $/, '').replace(/- $/, '');
+
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <div class="step-header">
+                            <div class="step-number">3</div>
+                            <div class="step-title">المعادلة المختصرة</div>
+                        </div>
+                        <div class="feedback correct">
+                            ✅ إجابة صحيحة! +2 نقطة<br>
+                            <span class="render-math" data-latex="${eqLatex}"></span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div style="margin-bottom: 20px;">
+                    <div class="step-header">
+                        <div class="step-number">3</div>
+                        <div class="step-title">المعادلة المختصرة</div>
+                    </div>
+                    
+                    <div class="question-text">
+                        اكتب المعادلة المختصرة <span class="render-math" data-latex="y = \\alpha x + \\beta"></span><br>
+                        <small style="color: rgba(255,215,0,0.7);">
+                            حيث <span class="render-math" data-latex="\\alpha = -\\frac{a}{b}"></span> و 
+                            <span class="render-math" data-latex="\\beta = -\\frac{c}{b}"></span>
+                        </small>
+                    </div>
+
+                    <div class="step3-inputs">
+                        <span>y =</span>
+                        <input type="number" step="any" id="step3-alpha" placeholder="α" value="${step3Inputs.alpha}">
+                        <span>x +</span>
+                        <input type="number" step="any" id="step3-beta" placeholder="β" value="${step3Inputs.beta}">
+                    </div>
+
+                    ${step3Error ? `<div class="error-message">${step3Error}</div>` : ''}
+
+                    <button class="submit-btn" id="check-step3">تحقق</button>
+                </div>
+            `;
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    state.mode = btn.getAttribute('data-mode');
+                    render();
+                });
+            });
+
+            const startBtn = document.getElementById('start-btn');
+            if (startBtn) {
+                startBtn.addEventListener('click', startGame);
+            }
+
+            if (state.mode === 'manual') {
+                ['xA', 'yA', 'xU', 'yU'].forEach(field => {
+                    const input = document.getElementById(`input-${field}`);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            state.manualInputs[field] = e.target.value;
+                            const startBtn = document.getElementById('start-btn');
+                            const isValid = state.manualInputs.xA && state.manualInputs.yA && 
+                                           state.manualInputs.xU && state.manualInputs.yU;
+                            startBtn.disabled = !isValid;
+                        });
+                    }
+                });
+            }
+        }
+
+        function setupGameEventListeners() {
+            document.querySelectorAll('.option-btn:not(.disabled)').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = parseInt(btn.getAttribute('data-option'));
+                    selectOption(index);
+                });
+            });
+
+            const checkStep2Btn = document.getElementById('check-step2');
+            if (checkStep2Btn) {
+                checkStep2Btn.addEventListener('click', checkStep2);
+
+                ['a', 'b', 'c'].forEach(field => {
+                    const input = document.getElementById(`step2-${field}`);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            state.step2Inputs[field] = e.target.value;
+                        });
+                    }
+                });
+            }
+
+            const checkStep3Btn = document.getElementById('check-step3');
+            if (checkStep3Btn) {
+                checkStep3Btn.addEventListener('click', checkStep3);
+
+                ['alpha', 'beta'].forEach(field => {
+                    const input = document.getElementById(`step3-${field}`);
+                    if (input) {
+                        input.addEventListener('input', (e) => {
+                            state.step3Inputs[field] = e.target.value;
+                        });
+                    }
+                });
+            }
+
+            const newQuestionBtn = document.getElementById('new-question-btn');
+            if (newQuestionBtn) {
+                newQuestionBtn.addEventListener('click', newQuestion);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            render();
+        });
+    </script>
+</body>
+</html>
